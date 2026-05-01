@@ -14,8 +14,7 @@ const files = [
   "package.json",
   "Dockerfile",
   "render.yaml",
-  "docs/14_DEPLOYMENT_RUNBOOK_2026-05-01.md",
-  "docs/15_ACCOUNT_CONNECTION_CLICK_GUIDE_2026-05-01.md"
+  "docs/14_DEPLOYMENT_RUNBOOK_2026-05-01.md"
 ];
 
 const requiredUiTexts = [
@@ -34,11 +33,6 @@ const requiredUiTexts = [
   "팀 문서 점검 현황을 한눈에 봅니다",
   "권한 매트릭스",
   "감사 로그",
-  "GitHub와 Render 연결을 클릭만으로 준비하세요",
-  "GitHub 새 저장소 만들기",
-  "GitHub 빈 저장소 URL",
-  "Render Blueprint 배포 시작",
-  "Render 대시보드 열기",
   "문장별 분석",
   "제출 전 체크리스트",
   "검사할 문서를 입력해 주세요.",
@@ -94,7 +88,6 @@ assert(contents.get("src/app.js").includes('"/pdf-report"'), "PDF 리포트 rout
 assert(contents.get("src/app.js").includes('"/documents"'), "문서함 route가 없습니다.");
 assert(contents.get("src/app.js").includes('"/settings"'), "설정 route가 없습니다.");
 assert(contents.get("src/app.js").includes('"/org"'), "조직 route가 없습니다.");
-assert(contents.get("src/app.js").includes('"/deploy"'), "배포 연결 route가 없습니다.");
 assert(contents.get("server.js").includes('"/api/pdf"'), "서버 PDF 생성 API가 없습니다.");
 assert(contents.get("server.js").includes('"/api/health"'), "헬스체크 API가 없습니다.");
 assert(contents.get("server.js").includes('"/api/version"'), "버전 API가 없습니다.");

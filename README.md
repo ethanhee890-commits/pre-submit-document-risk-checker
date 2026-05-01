@@ -64,7 +64,6 @@ node tests/qa-smoke.js
 | `/documents` | 브라우저 임시 문서함 |
 | `/settings` | 기본 설정/보관정책 |
 | `/org` | 조직 화면 초안 |
-| `/deploy` | GitHub/Render 계정 연결 도우미 |
 
 ## 주요 파일
 
@@ -78,7 +77,6 @@ node tests/qa-smoke.js
 | `start.ps1` | Codex 번들 Node 우선 실행 스크립트 |
 | `tests/qa-smoke.js` | 필수 문구, 제한 문구, route 구현 smoke test |
 | `docs/12_JENNY_REVIEW_SPRINT1_2026-05-01.md` | 제니 Sprint 1 조건부 통과 리뷰 |
-| `docs/15_ACCOUNT_CONNECTION_CLICK_GUIDE_2026-05-01.md` | GitHub/Render 클릭 연결 가이드 |
 
 ## MVP 정책
 
@@ -127,14 +125,6 @@ node tests/qa-smoke.js
 - Render 배포 초안 `render.yaml`을 추가했습니다.
 - 환경 변수 예시 `.env.example`을 추가했습니다.
 - 배포 런북 `docs/14_DEPLOYMENT_RUNBOOK_2026-05-01.md`를 추가했습니다.
-
-## 계정 연결 도우미 반영
-
-- `/deploy`에서 GitHub 새 저장소 생성 링크와 Render 대시보드 링크를 제공합니다.
-- GitHub 빈 저장소 URL을 입력하면 형식을 검증하고 원격 저장소 연결 명령을 복사할 수 있습니다.
-- 에던께서 GitHub/Render 권한 승인만 직접 클릭하면 덱스가 URL을 받아 push와 배포 후속 작업을 이어갈 수 있습니다.
-- GitHub 원격 저장소 연결 후 `/deploy`에 Render Blueprint 직접 배포 버튼을 추가했습니다.
-- 클릭 연결 가이드 `docs/15_ACCOUNT_CONNECTION_CLICK_GUIDE_2026-05-01.md`를 추가했습니다.
 
 ## 다음 단계 권장 순서
 
