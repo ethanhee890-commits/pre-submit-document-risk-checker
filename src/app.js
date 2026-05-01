@@ -14,6 +14,7 @@ const MAX_LENGTH = 10000;
 const STORAGE_KEY = "preSubmitRiskCheckerDraft";
 const REPORTS_KEY = "preSubmitRiskCheckerReports";
 const SETTINGS_KEY = "preSubmitRiskCheckerSettings";
+const DEPLOYMENT_KEY = "preSubmitRiskCheckerDeployment";
 
 const DEFAULT_SETTINGS = {
   retention: "local-only",
@@ -26,6 +27,7 @@ const state = {
   route: window.location.pathname,
   draft: loadDraft(),
   settings: loadSettings(),
+  deployment: loadDeploymentDraft(),
   savedReports: loadSavedReports(),
   documentsFilter: {
     query: "",
@@ -160,6 +162,19 @@ function saveSettings() {
   localStorage.setItem(SETTINGS_KEY, JSON.stringify(state.settings));
 }
 
+function loadDeploymentDraft() {
+  try {
+    const stored = localStorage.getItem(DEPLOYMENT_KEY);
+    return stored ? { githubUrl: "", ...JSON.parse(stored) } : { githubUrl: "" };
+  } catch (error) {
+    return { githubUrl: "" };
+  }
+}
+
+function saveDeploymentDraft() {
+  localStorage.setItem(DEPLOYMENT_KEY, JSON.stringify(state.deployment));
+}
+
 function loadSavedReports() {
   try {
     return JSON.parse(localStorage.getItem(REPORTS_KEY) || "[]");
@@ -266,7 +281,7 @@ function navigate(path, { replace = false } = {}) {
 }
 
 function normalizeRoute() {
-  const allowed = ["/", "/check", "/checking", "/report", "/pdf-report", "/documents", "/settings", "/org"];
+  const allowed = ["/", "/check", "/checking", "/report", "/pdf-report", "/documents", "/settings", "/org", "/deploy"];
   if (!allowed.includes(window.location.pathname)) {
     window.history.replaceState({}, "", "/");
     state.route = "/";
@@ -367,6 +382,10 @@ function render() {
 
   if (state.route === "/org") {
     app.innerHTML = renderOrg();
+  }
+
+  if (state.route === "/deploy") {
+    app.innerHTML = renderDeploy();
   }
 
   bindRouteEvents();
@@ -1235,6 +1254,188 @@ function renderOrg() {
   `;
 }
 
+function parseGitHubRepoUrl(value) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const sshMatch = trimmed.match(/^git@github\.com:([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?$/);
+  if (sshMatch) {
+    return {
+      url: trimmed,
+      owner: sshMatch[1],
+      repo: sshMatch[2]
+    };
+  }
+
+  try {
+    const parsed = new URL(trimmed);
+    const segments = parsed.pathname.split("/").filter(Boolean);
+    if (parsed.protocol !== "https:" || parsed.hostname !== "github.com" || segments.length !== 2) {
+      return null;
+    }
+
+    const repo = segments[1].replace(/\.git$/, "");
+    if (!segments[0] || !repo) {
+      return null;
+    }
+
+    return {
+      url: trimmed,
+      owner: segments[0],
+      repo
+    };
+  } catch (error) {
+    return null;
+  }
+}
+
+function getGitHubUrlStatus(value) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) {
+    return {
+      tone: "watch",
+      text: "GitHub에서 빈 저장소를 만든 뒤 HTTPS URL을 붙여넣어 주세요."
+    };
+  }
+
+  const parsed = parseGitHubRepoUrl(trimmed);
+  if (!parsed) {
+    return {
+      tone: "alert",
+      text: "GitHub 저장소 URL 형식을 확인해 주세요. 예: https://github.com/owner/repo.git"
+    };
+  }
+
+  return {
+    tone: "good",
+    text: `${parsed.owner}/${parsed.repo} 저장소 URL로 확인했습니다.`
+  };
+}
+
+function getGitHubRemoteCommands(value) {
+  const parsed = parseGitHubRepoUrl(value);
+  if (!parsed) {
+    return "";
+  }
+
+  return [`git remote add origin ${parsed.url}`, "git branch -M main", "git push -u origin main"].join("\n");
+}
+
+function renderDeploy() {
+  const githubUrl = state.deployment.githubUrl || "";
+  const status = getGitHubUrlStatus(githubUrl);
+  const commands = getGitHubRemoteCommands(githubUrl);
+  const commandPreview = commands || "GitHub 빈 저장소 URL을 붙여넣으면 원격 저장소 연결 명령이 여기에 표시됩니다.";
+  const canCopy = Boolean(commands);
+
+  return `
+    <section class="page-heading">
+      <p class="eyebrow">계정 연결 도우미</p>
+      <h1>GitHub와 Render 연결을 클릭만으로 준비하세요</h1>
+      <p>로그인과 권한 승인은 에던께서 직접 클릭하고, 덱스는 빈 저장소 URL을 받아 원격 연결과 배포 준비를 이어갈 수 있게 도와드립니다.</p>
+    </section>
+
+    <section class="deploy-status-grid" aria-label="현재 배포 준비 상태">
+      ${[
+        ["Git 저장소", "준비됨", "현재 프로젝트는 Git commit으로 추적 중입니다."],
+        ["Docker", "준비됨", "Render에서 Docker 런타임으로 실행할 수 있습니다."],
+        ["Render 설정", "준비됨", "render.yaml과 /api/health 헬스체크를 포함했습니다."],
+        ["PDF 생성", "준비됨", "서버 PDF 생성 API는 Playwright 런타임을 사용합니다."]
+      ]
+        .map(
+          ([label, value, helper]) => `
+            <article class="deploy-status-card">
+              <span class="card-label">${label}</span>
+              <strong>${value}</strong>
+              <p>${helper}</p>
+            </article>
+          `
+        )
+        .join("")}
+    </section>
+
+    <section class="deploy-grid">
+      <article class="deploy-card">
+        <div class="section-heading small">
+          <p class="eyebrow">1단계</p>
+          <h2>GitHub 빈 저장소 만들기</h2>
+          <p>아래 버튼으로 GitHub 새 저장소 화면을 열고, 저장소를 비워 둔 상태로 생성해 주세요.</p>
+        </div>
+        <div class="deploy-actions">
+          <a class="button primary" href="https://github.com/new" target="_blank" rel="noopener noreferrer">GitHub 새 저장소 만들기</a>
+        </div>
+        <ol class="deploy-steps">
+          <li><strong>Repository name</strong><span>pre-submit-document-risk-checker 권장</span></li>
+          <li><strong>공개 범위</strong><span>Public 또는 Private 중 편한 방식을 선택</span></li>
+          <li><strong>초기 파일</strong><span>README, .gitignore, license는 만들지 않기</span></li>
+          <li><strong>Create repository</strong><span>생성 후 HTTPS URL을 복사</span></li>
+        </ol>
+      </article>
+
+      <article class="deploy-card">
+        <div class="section-heading small">
+          <p class="eyebrow">2단계</p>
+          <h2>GitHub 빈 저장소 URL 전달</h2>
+          <p>에던께서 URL만 붙여넣으면 덱스가 이어서 원격 저장소 연결과 push를 진행할 수 있습니다.</p>
+        </div>
+        <label class="deploy-url-panel">
+          <span>GitHub 빈 저장소 URL</span>
+          <input type="url" value="${escapeHtml(githubUrl)}" placeholder="https://github.com/owner/pre-submit-document-risk-checker.git" data-github-url />
+          <small class="url-status ${status.tone}" data-github-url-status>${status.text}</small>
+        </label>
+        <div class="command-panel">
+          <div class="command-panel-top">
+            <strong>덱스가 실행할 Git 명령</strong>
+            <button class="text-button" type="button" data-copy-github-commands ${canCopy ? "" : "disabled"}>명령 복사</button>
+          </div>
+          <pre class="command-box"><code data-github-command-box>${escapeHtml(commandPreview)}</code></pre>
+        </div>
+        <div class="handoff-box">
+          <span>덱스에게 전달할 URL</span>
+          <code data-github-url-mirror>${escapeHtml(githubUrl.trim() || "아직 입력되지 않았습니다.")}</code>
+          <button class="button secondary" type="button" data-copy-github-url ${parseGitHubRepoUrl(githubUrl) ? "" : "disabled"}>URL 복사</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="deploy-card deploy-render-card">
+      <div class="section-heading small">
+        <p class="eyebrow">3단계</p>
+        <h2>Render 계정 연결과 배포 생성</h2>
+        <p>GitHub push가 끝난 뒤 Render에서 GitHub 계정을 연결하고 이 저장소를 선택하면 됩니다.</p>
+      </div>
+      <div class="deploy-actions">
+        <a class="button primary" href="https://dashboard.render.com/" target="_blank" rel="noopener noreferrer">Render 대시보드 열기</a>
+        <a class="button secondary" href="https://render.com/docs/blueprint-spec" target="_blank" rel="noopener noreferrer">render.yaml 문서 보기</a>
+      </div>
+      <div class="render-checklist">
+        ${[
+          ["New", "Blueprint 또는 Web Service를 선택합니다."],
+          ["GitHub 연결", "방금 만든 저장소 접근 권한을 승인합니다."],
+          ["Runtime", "Docker 기반으로 실행합니다."],
+          ["Health Check Path", "/api/health를 입력합니다."],
+          ["Environment", "NODE_ENV=production 값을 사용합니다."]
+        ]
+          .map(
+            ([label, helper]) => `
+              <div>
+                <strong>${label}</strong>
+                <span>${helper}</span>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+      <aside class="deploy-next-box">
+        <strong>지금 에던께 필요한 한 가지</strong>
+        <p>GitHub에서 빈 저장소를 만든 뒤 URL을 이 화면에 붙여넣거나, 대화창에 그대로 보내주시면 됩니다.</p>
+      </aside>
+    </section>
+  `;
+}
+
 function runLoadingSequence() {
   if (state.loadingTimer) {
     clearInterval(state.loadingTimer);
@@ -1306,6 +1507,35 @@ function updateInputStatus(body) {
 
   bodyError?.remove();
   warningMessage?.remove();
+}
+
+function updateDeployUrlPreview() {
+  const githubUrl = state.deployment.githubUrl || "";
+  const status = getGitHubUrlStatus(githubUrl);
+  const commands = getGitHubRemoteCommands(githubUrl);
+  const isValid = Boolean(commands);
+  const commandPreview = commands || "GitHub 빈 저장소 URL을 붙여넣으면 원격 저장소 연결 명령이 여기에 표시됩니다.";
+  const statusElement = document.querySelector("[data-github-url-status]");
+  const commandBox = document.querySelector("[data-github-command-box]");
+  const mirror = document.querySelector("[data-github-url-mirror]");
+  const copyCommandsButton = document.querySelector("[data-copy-github-commands]");
+  const copyUrlButton = document.querySelector("[data-copy-github-url]");
+
+  if (statusElement) {
+    statusElement.className = `url-status ${status.tone}`;
+    statusElement.textContent = status.text;
+  }
+
+  if (commandBox) {
+    commandBox.textContent = commandPreview;
+  }
+
+  if (mirror) {
+    mirror.textContent = githubUrl.trim() || "아직 입력되지 않았습니다.";
+  }
+
+  copyCommandsButton?.toggleAttribute("disabled", !isValid);
+  copyUrlButton?.toggleAttribute("disabled", !isValid);
 }
 
 function startAnalysis() {
@@ -1550,6 +1780,42 @@ function bindRouteEvents() {
 
   document.querySelectorAll("[data-link-button]").forEach((button) => {
     button.addEventListener("click", () => navigate(button.dataset.linkButton));
+  });
+
+  document.querySelector("[data-github-url]")?.addEventListener("input", (event) => {
+    state.deployment.githubUrl = event.target.value;
+    saveDeploymentDraft();
+    updateDeployUrlPreview();
+  });
+
+  document.querySelector("[data-copy-github-commands]")?.addEventListener("click", async () => {
+    const commands = getGitHubRemoteCommands(state.deployment.githubUrl);
+    if (!commands) {
+      showToast("먼저 GitHub 빈 저장소 URL을 입력해 주세요.", "error");
+      return;
+    }
+
+    if (await copyTextToClipboard(commands)) {
+      showToast("Git 원격 연결 명령을 복사했습니다.", "success");
+      return;
+    }
+
+    showToast("명령을 복사하지 못했습니다. 화면의 명령을 직접 선택해 주세요.", "error");
+  });
+
+  document.querySelector("[data-copy-github-url]")?.addEventListener("click", async () => {
+    const githubUrl = state.deployment.githubUrl.trim();
+    if (!parseGitHubRepoUrl(githubUrl)) {
+      showToast("복사할 GitHub 저장소 URL을 먼저 확인해 주세요.", "error");
+      return;
+    }
+
+    if (await copyTextToClipboard(githubUrl)) {
+      showToast("GitHub 저장소 URL을 복사했습니다.", "success");
+      return;
+    }
+
+    showToast("URL을 복사하지 못했습니다. 입력칸의 URL을 직접 선택해 주세요.", "error");
   });
 
   document.querySelectorAll("[data-open-saved-report]").forEach((button) => {
