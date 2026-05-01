@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT || 4173);
+const host = process.env.HOST || "0.0.0.0";
 const startedAt = new Date();
 
 const appVersion = {
@@ -333,6 +334,6 @@ const server = createServer(async (request, response) => {
   }
 });
 
-server.listen(port, () => {
-  console.log(`문서 리스크 점검기 MVP: http://localhost:${port}`);
+server.listen(port, host, () => {
+  console.log(`문서 리스크 점검기 MVP: http://${host}:${port}`);
 });

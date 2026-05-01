@@ -3,7 +3,7 @@ services:
     name: pre-submit-document-risk-checker
     env: docker
     plan: free
-    autoDeploy: false
+    autoDeployTrigger: off
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV

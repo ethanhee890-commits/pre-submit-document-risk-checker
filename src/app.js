@@ -15,6 +15,8 @@ const STORAGE_KEY = "preSubmitRiskCheckerDraft";
 const REPORTS_KEY = "preSubmitRiskCheckerReports";
 const SETTINGS_KEY = "preSubmitRiskCheckerSettings";
 const DEPLOYMENT_KEY = "preSubmitRiskCheckerDeployment";
+const GITHUB_REPO_URL = "https://github.com/ethanhee890-commits/pre-submit-document-risk-checker";
+const RENDER_BLUEPRINT_URL = `https://render.com/deploy?repo=${encodeURIComponent(GITHUB_REPO_URL)}`;
 
 const DEFAULT_SETTINGS = {
   retention: "local-only",
@@ -1404,17 +1406,18 @@ function renderDeploy() {
       <div class="section-heading small">
         <p class="eyebrow">3단계</p>
         <h2>Render 계정 연결과 배포 생성</h2>
-        <p>GitHub push가 끝난 뒤 Render에서 GitHub 계정을 연결하고 이 저장소를 선택하면 됩니다.</p>
+        <p>GitHub 승인이 끝났다면 Blueprint 배포 링크로 바로 이동해 render.yaml 기준 설정을 검토하면 됩니다.</p>
       </div>
       <div class="deploy-actions">
-        <a class="button primary" href="https://dashboard.render.com/" target="_blank" rel="noopener noreferrer">Render 대시보드 열기</a>
+        <a class="button primary" href="${RENDER_BLUEPRINT_URL}" target="_blank" rel="noopener noreferrer">Render Blueprint 배포 시작</a>
+        <a class="button secondary" href="https://dashboard.render.com/" target="_blank" rel="noopener noreferrer">Render 대시보드 열기</a>
         <a class="button secondary" href="https://render.com/docs/blueprint-spec" target="_blank" rel="noopener noreferrer">render.yaml 문서 보기</a>
       </div>
       <div class="render-checklist">
         ${[
-          ["New", "Blueprint 또는 Web Service를 선택합니다."],
-          ["GitHub 연결", "방금 만든 저장소 접근 권한을 승인합니다."],
-          ["Runtime", "Docker 기반으로 실행합니다."],
+          ["Blueprint", "배포 링크에서 이 저장소를 선택합니다."],
+          ["GitHub 연결", "승인한 저장소 접근 권한을 확인합니다."],
+          ["Runtime", "render.yaml의 Docker 설정을 사용합니다."],
           ["Health Check Path", "/api/health를 입력합니다."],
           ["Environment", "NODE_ENV=production 값을 사용합니다."]
         ]
@@ -1430,7 +1433,7 @@ function renderDeploy() {
       </div>
       <aside class="deploy-next-box">
         <strong>지금 에던께 필요한 한 가지</strong>
-        <p>GitHub에서 빈 저장소를 만든 뒤 URL을 이 화면에 붙여넣거나, 대화창에 그대로 보내주시면 됩니다.</p>
+        <p>Render 화면에서 서비스 이름과 무료 플랜을 확인한 뒤 Apply 또는 Create 버튼을 클릭해 주세요.</p>
       </aside>
     </section>
   `;

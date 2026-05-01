@@ -48,13 +48,20 @@ git push -u origin main
 
 GitHub push가 끝난 뒤 진행합니다.
 
-1. `/deploy` 화면에서 `Render 대시보드 열기`를 클릭합니다.
+1. `/deploy` 화면에서 `Render Blueprint 배포 시작`을 클릭합니다.
 2. Render에서 GitHub 계정 연결을 승인합니다.
-3. New Blueprint 또는 New Web Service를 선택합니다.
-4. 방금 만든 GitHub 저장소를 선택합니다.
-5. Runtime은 Docker 기준으로 둡니다.
+3. 저장소가 `ethanhee890-commits/pre-submit-document-risk-checker`인지 확인합니다.
+4. `render.yaml` 기준 설정을 검토합니다.
+5. Runtime은 Docker 기준입니다.
 6. Health Check Path는 `/api/health`입니다.
 7. 환경 변수는 기본적으로 `NODE_ENV=production`만 필요합니다.
+8. Apply 또는 Create 버튼을 클릭해 배포를 시작합니다.
+
+직접 링크:
+
+```text
+https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fethanhee890-commits%2Fpre-submit-document-risk-checker
+```
 
 ## 프로젝트에 이미 준비된 배포 파일
 

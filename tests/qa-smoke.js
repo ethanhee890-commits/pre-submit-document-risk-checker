@@ -37,6 +37,7 @@ const requiredUiTexts = [
   "GitHub와 Render 연결을 클릭만으로 준비하세요",
   "GitHub 새 저장소 만들기",
   "GitHub 빈 저장소 URL",
+  "Render Blueprint 배포 시작",
   "Render 대시보드 열기",
   "문장별 분석",
   "제출 전 체크리스트",
@@ -97,6 +98,7 @@ assert(contents.get("src/app.js").includes('"/deploy"'), "배포 연결 route가
 assert(contents.get("server.js").includes('"/api/pdf"'), "서버 PDF 생성 API가 없습니다.");
 assert(contents.get("server.js").includes('"/api/health"'), "헬스체크 API가 없습니다.");
 assert(contents.get("server.js").includes('"/api/version"'), "버전 API가 없습니다.");
+assert(contents.get("server.js").includes('"0.0.0.0"'), "배포 환경용 host 바인딩이 없습니다.");
 assert(contents.get("src/app.js").includes("data-server-pdf"), "서버 PDF 생성 버튼이 없습니다.");
 assert(contents.get("src/app.js").includes("getRetentionStatus"), "보관 기간 상태 로직이 없습니다.");
 assert(contents.get("src/app.js").includes("data-purge-expired"), "만료 리포트 정리 액션이 없습니다.");
@@ -107,6 +109,7 @@ assert(contents.get("src/styles.css").includes("@media print"), "PDF/인쇄용 C
 assert(contents.get("src/styles.css").includes("@page"), "PDF 페이지 설정 CSS가 없습니다.");
 assert(contents.get("Dockerfile").includes("mcr.microsoft.com/playwright"), "Dockerfile이 Playwright 런타임을 사용하지 않습니다.");
 assert(contents.get("render.yaml").includes("/api/health"), "Render 헬스체크 경로가 없습니다.");
+assert(contents.get("render.yaml").includes("autoDeployTrigger: off"), "Render 자동 배포 설정이 명시되지 않았습니다.");
 assert(contents.get("src/data/mockAnalysis.js").includes("MOCK_SCENARIO_COUNT = 12"), "mock 시나리오 풀이 8개 이상임을 확인할 수 없습니다.");
 assert(contents.get("src/app.js").includes('const AXIS_ORDER = ["style", "citation", "ai", "submission"]'), "4축 카드 순서가 제니 권장 순서와 다릅니다.");
 
