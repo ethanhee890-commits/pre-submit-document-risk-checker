@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: pre-submit-document-risk-checker
+    env: docker
+    plan: free
+    autoDeploy: false
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production

@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "start:prod": "node server.js",
+    "check": "node --check server.js && node --check src/app.js",
     "test": "node tests/qa-smoke.js"
   },
   "optionalDependencies": {

@@ -6,6 +6,14 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT || 4173);
+const startedAt = new Date();
+
+const appVersion = {
+  name: "pre-submit-document-risk-checker",
+  version: "0.1.0",
+  mode: process.env.NODE_ENV || "development",
+  startedAt: startedAt.toISOString()
+};
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -271,6 +279,31 @@ function resolveRequestPath(urlPath) {
 const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url || "/", `http://localhost:${port}`);
+
+    if (request.method === "GET" && url.pathname === "/api/health") {
+      response.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store"
+      });
+      response.end(
+        JSON.stringify({
+          ok: true,
+          service: appVersion.name,
+          uptimeSeconds: Math.round((Date.now() - startedAt.getTime()) / 1000),
+          timestamp: new Date().toISOString()
+        })
+      );
+      return;
+    }
+
+    if (request.method === "GET" && url.pathname === "/api/version") {
+      response.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store"
+      });
+      response.end(JSON.stringify(appVersion));
+      return;
+    }
 
     if (request.method === "POST" && url.pathname === "/api/pdf") {
       const payload = await readJsonBody(request);

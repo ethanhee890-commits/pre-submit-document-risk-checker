@@ -119,9 +119,18 @@ node tests/qa-smoke.js
 - 조직 화면에 권한 매트릭스와 감사 로그 mock을 추가했습니다.
 - 제니 시각 QA용 공유 문서 `docs/13_JENNY_VISUAL_QA_PACKAGE_2026-05-01.md`를 추가했습니다.
 
+## 배포 준비 반영
+
+- `/api/health` 헬스체크 API를 추가했습니다.
+- `/api/version` 버전 정보 API를 추가했습니다.
+- Docker 배포용 `Dockerfile`과 `.dockerignore`를 추가했습니다.
+- Render 배포 초안 `render.yaml`을 추가했습니다.
+- 환경 변수 예시 `.env.example`을 추가했습니다.
+- 배포 런북 `docs/14_DEPLOYMENT_RUNBOOK_2026-05-01.md`를 추가했습니다.
+
 ## 다음 단계 권장 순서
 
-1. 배포 URL 구성과 제니 시각 QA
+1. GitHub 원격 저장소 연결 후 Render 또는 유사 호스팅에 배포
 2. 문서함 다중 선택과 일괄 내보내기
 3. 조직 화면 권한 변경 이력 상세화
 4. 실제 계정/서버 저장 구조 설계

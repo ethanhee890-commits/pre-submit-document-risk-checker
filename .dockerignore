@@ -1,5 +1,7 @@
-node_modules/
-*.log
+.git
+node_modules
+server.*.log
 qa-artifacts/*.pdf
+*.log
 .DS_Store
 Thumbs.db
