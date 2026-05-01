@@ -491,10 +491,16 @@ function renderCheck() {
   const countState = characterCount > MAX_LENGTH ? "error" : characterCount < MIN_LENGTH && characterCount > 0 ? "warning" : "normal";
 
   return `
-    <section class="page-heading">
+    <section class="page-heading check-heading">
       <p class="eyebrow">문서 검사 입력</p>
-      <h1>검사할 문서를 붙여넣고 점검 기준을 선택하세요</h1>
-      <p>입력한 문서는 현재 브라우저에 임시로만 보관됩니다. 브라우저 데이터 삭제 시 함께 삭제될 수 있습니다.</p>
+      <h1 class="balanced-title" aria-label="검사할 문서를 붙여넣고 점검 기준을 선택하세요">
+        <span>검사할 문서를 붙여넣고</span>
+        <span>점검 기준을 선택하세요</span>
+      </h1>
+      <p class="split-helper">
+        <span>입력한 문서는 현재 브라우저에 임시로만 보관됩니다.</span>
+        <span>브라우저 데이터 삭제 시 함께 삭제될 수 있습니다.</span>
+      </p>
     </section>
 
     <section class="check-layout">
@@ -551,32 +557,41 @@ function renderCheck() {
           </div>
         </div>
 
-        <div class="form-actions">
+        <div class="form-actions check-actions">
           <button class="button primary" type="submit">리스크 점검하기</button>
           <button class="button secondary" type="button" data-show-error-state>오류 상태 확인</button>
         </div>
       </form>
 
-      <aside class="guide-panel" aria-label="입력 안내">
-        <div class="empty-state">
-          <span class="empty-icon" aria-hidden="true">입</span>
-          <h2>Empty 상태</h2>
-          <p>본문이 비어 있으면 오류 메시지가 표시됩니다. 짧은 문서는 결과를 참고 지표로만 활용하도록 안내합니다.</p>
+      <aside class="guide-panel check-guide" aria-label="검사 전 확인사항">
+        <div class="check-guide-header">
+          <span class="guide-kicker">입력 전 점검</span>
+          <h2>검사 전 확인사항</h2>
+          <p>본문을 넣기 전에 아래 기준만 확인하면 됩니다.</p>
         </div>
-        <div class="policy-note">
-          <h3>데이터 처리 안내</h3>
-          <p>
-            이 MVP는 실제 서버 분석이나 외부 모델 연동을 하지 않습니다. 저장 버튼도 mock 피드백만 제공합니다.
-          </p>
-        </div>
-        <div class="quality-list">
-          <h3>좋은 입력 예시</h3>
-          <ul>
-            <li>문서 목적과 제출 맥락이 드러나는 본문</li>
-            <li>인용이나 수치가 포함된 문장</li>
-            <li>수정 전 확인하고 싶은 단락 전체</li>
-          </ul>
-        </div>
+        <ul class="check-guide-list">
+          <li>
+            <span aria-hidden="true">01</span>
+            <div>
+              <strong>본문을 먼저 붙여넣기</strong>
+              <p>비어 있으면 검사 버튼 아래에 입력 안내가 표시됩니다.</p>
+            </div>
+          </li>
+          <li>
+            <span aria-hidden="true">02</span>
+            <div>
+              <strong>결과는 참고 지표로 보기</strong>
+              <p>짧은 문서는 리스크 신호가 불안정할 수 있습니다.</p>
+            </div>
+          </li>
+          <li>
+            <span aria-hidden="true">03</span>
+            <div>
+              <strong>원문 보관 범위 확인</strong>
+              <p>현재 MVP는 브라우저 임시 저장과 mock 리포트만 사용합니다.</p>
+            </div>
+          </li>
+        </ul>
       </aside>
     </section>
   `;
