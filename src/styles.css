@@ -834,6 +834,11 @@ button {
   gap: 12px;
 }
 
+.pdf-suggestion-list {
+  display: grid;
+  gap: 12px;
+}
+
 .pdf-finding {
   display: grid;
   gap: 8px;
@@ -853,6 +858,39 @@ button {
 }
 
 .pdf-finding p {
+  margin: 0;
+}
+
+.pdf-suggestion {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fbfaf6;
+}
+
+.pdf-suggestion strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.pdf-suggestion dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.pdf-suggestion dl div {
+  display: grid;
+  gap: 4px;
+}
+
+.pdf-suggestion dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pdf-suggestion dd {
   margin: 0;
 }
 
@@ -1995,6 +2033,7 @@ button {
 
   .axis-card,
   .pdf-finding,
+  .pdf-suggestion,
   .pdf-notice {
     break-inside: avoid;
   }

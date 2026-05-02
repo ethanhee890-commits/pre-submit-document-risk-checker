@@ -13,6 +13,7 @@ const appVersion = {
   name: "pre-submit-document-risk-checker",
   version: "0.1.0",
   mode: process.env.NODE_ENV || "development",
+  commit: process.env.RENDER_GIT_COMMIT || process.env.GIT_COMMIT || process.env.COMMIT_SHA || "unknown",
   startedAt: startedAt.toISOString()
 };
 
@@ -171,6 +172,18 @@ function buildPdfHtml(report) {
     }
     .finding + .finding { margin-top: 10px; }
     .finding small { display: block; color: #63706a; margin-top: 6px; }
+    .suggestion + .suggestion { margin-top: 10px; }
+    .suggestion {
+      border: 1px solid #ddd8cf;
+      border-radius: 8px;
+      padding: 13px;
+      background: #fbfaf6;
+      break-inside: avoid;
+    }
+    .suggestion dl { display: grid; gap: 8px; margin: 8px 0 0; }
+    .suggestion div { display: grid; gap: 3px; }
+    .suggestion dt { color: #63706a; font-size: 12px; font-weight: 800; }
+    .suggestion dd { margin: 0; }
     footer {
       position: fixed;
       right: 0;
@@ -226,6 +239,26 @@ function buildPdfHtml(report) {
           <strong>${escapeHtml((finding.labels || []).join(", "))} · ${escapeHtml(LEVEL_LABELS[finding.level] || finding.level)}</strong>
           <p>${escapeHtml(finding.text)}</p>
           <small>${escapeHtml(finding.reason)}</small>
+        </article>`
+      )
+      .join("")}
+  </section>
+  <section>
+    <h2>개선 제안</h2>
+    ${findings
+      .map(
+        (finding) => `<article class="suggestion">
+          <strong>${escapeHtml((finding.labels || []).join(", "))}</strong>
+          <dl>
+            <div>
+              <dt>원문</dt>
+              <dd>${escapeHtml(finding.text)}</dd>
+            </div>
+            <div>
+              <dt>제안문</dt>
+              <dd>${escapeHtml(finding.suggestedRewrite || "문서 목적에 맞게 직접 검토해 주세요.")}</dd>
+            </div>
+          </dl>
         </article>`
       )
       .join("")}

@@ -929,6 +929,31 @@ function renderPdfReport() {
       </section>
 
       <section class="pdf-section">
+        <h3>개선 제안</h3>
+        <div class="pdf-suggestion-list">
+          ${report.findings
+            .map(
+              (finding) => `
+                <div class="pdf-suggestion">
+                  <strong>${finding.labels.join(", ")}</strong>
+                  <dl>
+                    <div>
+                      <dt>원문</dt>
+                      <dd>${escapeHtml(finding.text)}</dd>
+                    </div>
+                    <div>
+                      <dt>제안문</dt>
+                      <dd>${escapeHtml(finding.suggestedRewrite || "문서 목적에 맞게 직접 검토해 주세요.")}</dd>
+                    </div>
+                  </dl>
+                </div>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+
+      <section class="pdf-section">
         <h3>제출 전 체크리스트</h3>
         <ul class="pdf-checklist">
           ${report.checklist.map((item) => `<li>${item.label}</li>`).join("")}

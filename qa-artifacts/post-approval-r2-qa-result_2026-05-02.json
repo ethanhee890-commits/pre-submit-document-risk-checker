@@ -1,0 +1,44 @@
+{
+  "checkedAt": "2026-05-02T09:39:49.966Z",
+  "baseUrl": "http://127.0.0.1:4202",
+  "version": {
+    "name": "pre-submit-document-risk-checker",
+    "version": "0.1.0",
+    "mode": "qa",
+    "commit": "local-r2-recheck",
+    "startedAt": "2026-05-02T09:39:28.371Z"
+  },
+  "artifacts": {
+    "reportSuggestion": "qa-artifacts\\POST-APPROVAL-R2-REPORT-SUGGESTION_2026-05-02.png",
+    "pdfSuggestion": "qa-artifacts\\POST-APPROVAL-R2-PDF-SUGGESTION_2026-05-02.png",
+    "pdfFile": "qa-artifacts\\POST-APPROVAL-R2-PDF_QUALITY_2026-05-02.pdf",
+    "pdfExtractedText": "qa-artifacts\\POST-APPROVAL-R2-PDF-EXTRACTED-TEXT_2026-05-02.txt"
+  },
+  "checks": {
+    "suggestionIsComparableSentence": true,
+    "pdfSuggestionSectionVisible": true,
+    "pdfExtractedSuggestionText": true,
+    "pdfDownloadSuccess": true,
+    "pdfA4PageSize": true,
+    "forbiddenTermsClear": true,
+    "apiVersionHasCommitField": true
+  },
+  "pdf": {
+    "httpStatus": 200,
+    "bytes": 86385,
+    "pageCount": 2,
+    "pageSizes": [
+      {
+        "page": 1,
+        "width": 596,
+        "height": 843
+      },
+      {
+        "page": 2,
+        "width": 596,
+        "height": 843
+      }
+    ]
+  },
+  "forbiddenHits": []
+}

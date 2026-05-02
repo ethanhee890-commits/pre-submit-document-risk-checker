@@ -27,6 +27,7 @@ const requiredUiTexts = [
   "인쇄용 문서 신뢰도 리포트",
   "권장 파일명",
   "PDF로 저장",
+  "개선 제안",
   "PDF API 테스트",
   "저장한 리포트를 다시 확인하세요",
   "필터 초기화",
@@ -130,6 +131,7 @@ assert(contents.get("src/app.js").includes('"/documents"'), "문서함 route가 
 assert(contents.get("src/app.js").includes('"/settings"'), "설정 route가 없습니다.");
 assert(contents.get("src/app.js").includes('"/org"'), "조직 route가 없습니다.");
 assert(contents.get("server.js").includes('"/api/pdf"'), "PDF API가 없습니다.");
+assert(contents.get("server.js").includes("<h2>개선 제안</h2>"), "서버 PDF에 개선 제안 섹션이 없습니다.");
 assert(contents.get("server.js").includes('"/api/health"'), "헬스체크 API가 없습니다.");
 assert(contents.get("server.js").includes('"/api/version"'), "버전 API가 없습니다.");
 assert(contents.get("server.js").includes('"0.0.0.0"'), "배포 환경용 host 바인딩이 없습니다.");
