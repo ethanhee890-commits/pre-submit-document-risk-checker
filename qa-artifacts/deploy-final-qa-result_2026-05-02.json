@@ -1,0 +1,159 @@
+{
+  "ok": true,
+  "baseUrl": "https://pre-submit-document-risk-checker.onrender.com",
+  "checkedAt": "2026-05-02T04:16:20.621Z",
+  "screenshots": [
+    {
+      "label": "LAND-001 desktop",
+      "path": "qa-artifacts/DEPLOY-LAND-001_desktop_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/"
+    },
+    {
+      "label": "LAND-001 mobile",
+      "path": "qa-artifacts/DEPLOY-LAND-001_mobile_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/"
+    },
+    {
+      "label": "CHECK-001 desktop",
+      "path": "qa-artifacts/DEPLOY-CHECK-001_desktop_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/check"
+    },
+    {
+      "label": "CHECK-001 mobile",
+      "path": "qa-artifacts/DEPLOY-CHECK-001_mobile_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/check"
+    },
+    {
+      "label": "CHECK-EMPTY-ERROR",
+      "path": "qa-artifacts/DEPLOY-CHECK-EMPTY-ERROR_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/check"
+    },
+    {
+      "label": "CHECKING-001",
+      "path": "qa-artifacts/DEPLOY-CHECKING-001_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/checking"
+    },
+    {
+      "label": "REPORT-001 desktop",
+      "path": "qa-artifacts/DEPLOY-REPORT-001_desktop_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/report"
+    },
+    {
+      "label": "REPORT-SENTENCE-DETAIL",
+      "path": "qa-artifacts/DEPLOY-REPORT-SENTENCE-DETAIL_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/report"
+    },
+    {
+      "label": "REPORT-SUGGESTION",
+      "path": "qa-artifacts/DEPLOY-REPORT-SUGGESTION_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/report"
+    },
+    {
+      "label": "REPORT-CHECKLIST",
+      "path": "qa-artifacts/DEPLOY-REPORT-CHECKLIST_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/report"
+    },
+    {
+      "label": "REPORT-001 mobile",
+      "path": "qa-artifacts/DEPLOY-REPORT-001_mobile_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/report"
+    },
+    {
+      "label": "PDF-001",
+      "path": "qa-artifacts/DEPLOY-PDF-001_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/pdf-report"
+    },
+    {
+      "label": "DOC-001",
+      "path": "qa-artifacts/DEPLOY-DOC-001_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/documents"
+    },
+    {
+      "label": "SETTINGS-001",
+      "path": "qa-artifacts/DEPLOY-SETTINGS-001_2026-05-02.png",
+      "url": "https://pre-submit-document-risk-checker.onrender.com/settings"
+    }
+  ],
+  "badTerms": [
+    "Mock",
+    "mock",
+    "MVP",
+    "????",
+    "?? mock",
+    "?? ?? ??",
+    "Mock ?? ?? ?",
+    "?? PDF ??",
+    "AI ?? ??",
+    "?? ??",
+    "humanizer",
+    "bypass",
+    "AI ?? ??",
+    "100% ?? ?"
+  ],
+  "termResults": [
+    {
+      "label": "LAND-001 desktop",
+      "found": []
+    },
+    {
+      "label": "LAND-001 mobile",
+      "found": []
+    },
+    {
+      "label": "CHECK-001 desktop",
+      "found": []
+    },
+    {
+      "label": "CHECK-001 mobile",
+      "found": []
+    },
+    {
+      "label": "CHECK-EMPTY-ERROR before submit",
+      "found": []
+    },
+    {
+      "label": "CHECK-EMPTY-ERROR",
+      "found": []
+    },
+    {
+      "label": "CHECKING setup",
+      "found": []
+    },
+    {
+      "label": "CHECKING-001",
+      "found": []
+    },
+    {
+      "label": "REPORT-001 desktop",
+      "found": []
+    },
+    {
+      "label": "REPORT-SENTENCE-DETAIL",
+      "found": []
+    },
+    {
+      "label": "REPORT-SUGGESTION",
+      "found": []
+    },
+    {
+      "label": "REPORT-CHECKLIST",
+      "found": []
+    },
+    {
+      "label": "REPORT-001 mobile",
+      "found": []
+    },
+    {
+      "label": "PDF-001",
+      "found": []
+    },
+    {
+      "label": "DOC-001",
+      "found": []
+    },
+    {
+      "label": "SETTINGS-001",
+      "found": []
+    }
+  ]
+}
