@@ -107,6 +107,19 @@ for (const term of removedPublicTerms) {
   assert(!uiBundle.includes(term), `일반 UI에 제거 대상 문구가 남아 있습니다: ${term}`);
 }
 
+const suggestionTexts = [...contents.get("src/data/mockAnalysis.js").matchAll(/suggestedRewrite:\s*\n\s*"([^"]+)"/g)].map(
+  (match) => match[1]
+);
+assert(suggestionTexts.length >= 10, "개선 제안문 샘플 수가 부족합니다.");
+for (const suggestion of suggestionTexts) {
+  assert(!suggestion.includes("[") && !suggestion.includes("]"), `개선 제안문에 빈칸 템플릿이 남아 있습니다: ${suggestion}`);
+  assert(
+    !suggestion.startsWith("이 문장") && !suggestion.startsWith("이 문단") && !suggestion.startsWith("이 문서"),
+    `개선 제안문이 지시문처럼 시작합니다: ${suggestion}`
+  );
+  assert(!suggestion.includes("해 주세요"), `개선 제안문이 실제 대안문이 아니라 지시문입니다: ${suggestion}`);
+}
+
 assert(!contents.get("index.html").includes('href="/org"'), "일반 내비게이션에 조직 메뉴가 남아 있습니다.");
 assert(contents.get("src/app.js").includes("isQaMode()"), "QA 전용 화면 분기 함수가 없습니다.");
 assert(contents.get("server.js").includes("index.html"), "서버 fallback이 index.html을 가리키지 않습니다.");
