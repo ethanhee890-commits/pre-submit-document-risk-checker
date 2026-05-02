@@ -339,7 +339,10 @@ const server = createServer(async (request, response) => {
     const contents = await readFile(filePath);
 
     response.writeHead(200, {
-      "Content-Type": mimeTypes[ext] || "application/octet-stream"
+      "Content-Type": mimeTypes[ext] || "application/octet-stream",
+      "Cache-Control": "no-store, max-age=0, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0"
     });
     response.end(contents);
   } catch (error) {
