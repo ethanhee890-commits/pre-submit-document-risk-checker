@@ -244,7 +244,10 @@ function buildPdfHtml(report) {
 
 async function createPdfBuffer(report) {
   const { chromium } = await loadPlaywright();
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
+  });
 
   try {
     const page = await browser.newPage();
@@ -307,9 +310,20 @@ const server = createServer(async (request, response) => {
     }
 
     if (request.method === "POST" && url.pathname === "/api/pdf") {
-      const payload = await readJsonBody(request);
-      const fileName = safeFileName(payload.fileName || "document-risk-report.pdf");
-      const buffer = await createPdfBuffer({ ...payload.report, fileName });
+      let payload;
+      let fileName;
+      let buffer;
+
+      try {
+        payload = await readJsonBody(request);
+        fileName = safeFileName(payload.fileName || "document-risk-report.pdf");
+        buffer = await createPdfBuffer({ ...payload.report, fileName });
+      } catch (error) {
+        console.error("PDF generation failed:", error);
+        response.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
+        response.end("PDF 생성에 실패했습니다. 브라우저 인쇄 저장을 사용해 주세요.");
+        return;
+      }
 
       response.writeHead(200, {
         "Content-Type": "application/pdf",
