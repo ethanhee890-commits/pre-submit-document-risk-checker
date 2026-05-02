@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-05-02T04:49:47.778Z",
+  "baseUrl": "http://127.0.0.1:4199",
+  "artifacts": {
+    "pdf": "qa-artifacts\\JENNY-FINAL-PDF-QUALITY_2026-05-02.pdf",
+    "extractedText": "qa-artifacts\\JENNY-FINAL-PDF-EXTRACTED-TEXT_2026-05-02.txt",
+    "riskLabelsDesktop": "qa-artifacts/JENNY-FINAL-RISK-LABELS_desktop_2026-05-02.png",
+    "pdfDesktop": "qa-artifacts/JENNY-FINAL-PDF_desktop_2026-05-02.png",
+    "pdfMobile": "qa-artifacts/JENNY-FINAL-PDF_mobile_2026-05-02.png"
+  },
+  "pdf": {
+    "httpStatus": 200,
+    "contentType": "application/pdf",
+    "contentDisposition": "attachment; filename*=UTF-8''%EC%9E%90%EC%86%8C%EC%84%9C_%EB%AC%B8%EC%84%9C%EB%A6%AC%EC%8A%A4%ED%81%AC_%EC%A0%90%EA%B2%80%EB%A6%AC%ED%8F%AC%ED%8A%B8_2026-05-02.pdf",
+    "bytes": 84411,
+    "pageCount": 2,
+    "pageSizes": [
+      {
+        "page": 1,
+        "width": 596,
+        "height": 843
+      },
+      {
+        "page": 2,
+        "width": 596,
+        "height": 843
+      }
+    ],
+    "checks": {
+      "downloadSuccess": true,
+      "koreanFilenameHeader": true,
+      "koreanTextSearchable": true,
+      "copyPasteKoreanIntact": true,
+      "a4PageSize": true,
+      "pageBreakChecked": true
+    }
+  },
+  "riskLabels": {
+    "text": "문체 점검\n우선 확인\n\n넓은 평가 표현과 반복적인 자기소개 문장이 많습니다.\n\n4개 근거\n출처·인용 리스크\n양호\n\n자소서 문서 유형상 별도 인용 리스크는 낮습니다.\n\n0개 근거\nAI 작성 리스크\n보완 권장\n\n일반적인 성장 서술이 이어져 추가 검토가 필요합니다.\n\n3개 근거\n제출 안정성\n우선 확인\n\n문서 목적 대비 본인 경험의 확인 가능한 정보가 부족합니다.\n\n3개 근거",
+    "hasRecommendedLabels": true,
+    "avoidsBlockedPhrases": true
+  },
+  "policyCopy": {
+    "prototypeNoticeVisible": true,
+    "documentsLocalStorageNotice": true,
+    "settingsPolicyFourItems": true
+  },
+  "forbiddenScreenTerms": {
+    "checkedTerms": [
+      "Mock",
+      "mock",
+      "MVP",
+      "시나리오",
+      "적용 mock",
+      "오류 상태 확인",
+      "Mock 분석 진행 중",
+      "서버 PDF 생성",
+      "AI 탐지 우회",
+      "통과 보장",
+      "humanizer",
+      "bypass",
+      "AI 냄새 제거",
+      "100% 사람 글"
+    ],
+    "hits": []
+  }
+}

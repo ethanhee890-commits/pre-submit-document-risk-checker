@@ -207,6 +207,8 @@ button {
   font-size: clamp(38px, 7vw, 70px);
   line-height: 1.08;
   letter-spacing: 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .hero-subtitle,
@@ -717,6 +719,8 @@ button {
   margin: 0;
   font-size: clamp(30px, 5vw, 46px);
   line-height: 1.15;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .pdf-toolbar p {
@@ -769,6 +773,8 @@ button {
   margin: 12px 0 4px;
   font-size: clamp(30px, 5vw, 48px);
   line-height: 1.15;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .pdf-header p,
@@ -806,6 +812,7 @@ button {
 .pdf-section h3 {
   margin: 0 0 14px;
   font-size: 22px;
+  word-break: keep-all;
 }
 
 .pdf-action-list,
@@ -1318,6 +1325,15 @@ button {
 .notice-panel p {
   margin: 4px 0 0;
   color: #2b4558;
+}
+
+.prototype-notice {
+  border-color: rgba(29, 123, 107, 0.24);
+  background: #edf7f3;
+}
+
+.prototype-notice p {
+  color: #28564d;
 }
 
 .warning-notice {

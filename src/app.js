@@ -68,6 +68,15 @@ const READINESS_META = {
   }
 };
 
+function renderPrototypeNotice() {
+  return `
+    <section class="notice-panel prototype-notice" aria-label="프로토타입 데모 안내">
+      <strong>프로토타입 데모 안내</strong>
+      <p>이 화면은 제품 흐름 검증을 위한 프로토타입입니다. 현재 결과는 실제 AI 분석이 아니라 샘플 데이터 기반으로 표시됩니다.</p>
+    </section>
+  `;
+}
+
 const ORG_MEMBERS = [
   {
     id: "M-001",
@@ -443,6 +452,8 @@ function renderLanding() {
       </div>
     </section>
 
+    ${renderPrototypeNotice()}
+
     <section class="section-block compact" id="features">
       <div class="section-heading">
         <p class="eyebrow">4대 점검 항목</p>
@@ -505,6 +516,8 @@ function renderCheck() {
         <span>제출 전 확인이 필요한 부분을 알려드립니다.</span>
       </p>
     </section>
+
+    ${renderPrototypeNotice()}
 
     <section class="check-layout">
       <form class="input-panel" data-check-form novalidate>
@@ -662,6 +675,8 @@ function renderReport() {
         <button class="button primary" type="button" data-recheck>다시 점검하기</button>
       </div>
     </section>
+
+    ${renderPrototypeNotice()}
 
     <section class="notice-panel" aria-label="결과 안내">
       <strong>작성자를 단정하지 않는 참고 지표입니다.</strong>
@@ -865,6 +880,8 @@ function renderPdfReport() {
       </div>
     </section>
 
+    ${renderPrototypeNotice()}
+
     <article class="pdf-sheet" aria-label="인쇄용 리포트">
       <header class="pdf-header">
         <div>
@@ -948,8 +965,10 @@ function renderDocuments() {
     <section class="page-heading">
       <p class="eyebrow">문서함</p>
       <h1>저장한 리포트를 다시 확인하세요</h1>
-      <p>문서함은 현재 브라우저에만 임시 저장됩니다. 원문 저장 여부는 설정에서 선택할 수 있습니다.</p>
+      <p>이 문서함은 현재 브라우저 기준으로 저장됩니다. 다른 기기나 브라우저와 동기화되지 않습니다. 원문 저장 여부는 설정에서 선택할 수 있습니다.</p>
     </section>
+
+    ${renderPrototypeNotice()}
 
     <section class="document-tools" aria-label="문서함 검색과 필터">
       <label class="search-field">
@@ -1051,8 +1070,10 @@ function renderSettings() {
     <section class="page-heading">
       <p class="eyebrow">기본 설정</p>
       <h1>보관정책과 데이터 사용 기준을 정합니다</h1>
-      <p>현재 설정은 이 브라우저에만 저장됩니다. 정식 서비스에서는 계정별 정책과 삭제 기능이 필요합니다.</p>
+      <p>현재 설정은 이 브라우저 기준으로 저장됩니다. 다른 기기나 브라우저와 동기화되지 않습니다.</p>
     </section>
+
+    ${renderPrototypeNotice()}
 
     <section class="settings-layout">
       <form class="settings-panel" data-settings-form>
@@ -1113,14 +1134,15 @@ function renderSettings() {
       <aside class="guide-panel">
         <div class="policy-note">
           <h3>데이터 정책 기준</h3>
-          <p>기본 점검과 임시 저장은 현재 브라우저 기준으로 동작합니다. PDF 파일을 서버에서 만드는 기능을 사용하는 경우 리포트 출력에 필요한 데이터가 일시적으로 전송될 수 있습니다.</p>
+          <p>원문 보관 기본값은 꺼짐입니다. 리포트와 설정은 현재 브라우저 기준으로 임시 저장됩니다.</p>
         </div>
         <div class="quality-list">
-          <h3>다음 구현 전 확인</h3>
+          <h3>현재 데이터 사용 안내</h3>
           <ul>
-            <li>원문 보관 기간</li>
-            <li>삭제 요청 처리</li>
-            <li>조직 관리자 접근 권한</li>
+            <li>원문은 사용자가 직접 켠 경우에만 리포트와 함께 보관됩니다.</li>
+            <li>브라우저 인쇄가 아닌 별도 PDF 저장 기능을 사용할 때만 리포트 출력 데이터가 일시적으로 서버에 전송될 수 있습니다.</li>
+            <li>학습 데이터 사용은 현재 제공하지 않습니다.</li>
+            <li>정식 서비스 전 삭제 요청 처리와 계정별 접근 권한 확인이 필요합니다.</li>
           </ul>
         </div>
       </aside>
