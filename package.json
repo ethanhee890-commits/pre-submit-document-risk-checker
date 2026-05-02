@@ -2,7 +2,7 @@
   "name": "pre-submit-document-risk-checker",
   "version": "0.1.0",
   "private": true,
-  "description": "한국어 문서 제출 전 문체, AI 작성 리스크, 출처·인용, 제출 안정성을 점검하는 mock 기반 MVP 프로토타입",
+  "description": "한국어 문서 제출 전 문체, AI 작성 리스크, 출처·인용, 제출 안정성을 점검하는 웹 프로토타입",
   "type": "module",
   "scripts": {
     "start": "node server.js",

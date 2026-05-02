@@ -46,7 +46,7 @@ const navMenu = document.querySelector("[data-nav-menu]");
 
 const loadingSteps = [
   "문장 구조 확인 중",
-  "문체 자연도 분석 중",
+  "문체 점검 기준 확인 중",
   "출처·인용 리스크 확인 중",
   "제출 안정성 리포트 생성 중"
 ];
@@ -63,7 +63,7 @@ const READINESS_META = {
     helper: "몇 가지 항목을 보완하면 제출 안정성이 더 높아집니다."
   },
   high: {
-    label: "우선 보완 필요",
+    label: "우선 확인",
     helper: "제출 전 먼저 확인해야 할 조치가 있습니다."
   }
 };
@@ -219,6 +219,10 @@ function getExpiredReports() {
   return state.savedReports.filter((report) => getRetentionStatus(report).key === "expired");
 }
 
+function isQaMode() {
+  return new URLSearchParams(window.location.search).get("qa") === "1";
+}
+
 function getCurrentReport() {
   if (!state.report) {
     state.report = createEmptyReport();
@@ -310,8 +314,7 @@ function toDateStamp(value) {
 
 function createPdfFileName(report) {
   const documentLabel = report.documentLabel || "문서";
-  const scenarioId = report.scenarioId || "REPORT";
-  return `문서신뢰도리포트_${documentLabel}_${scenarioId}_${toDateStamp(report.meta?.createdAt || Date.now())}.pdf`;
+  return `문서신뢰도리포트_${documentLabel}_${toDateStamp(report.meta?.createdAt || Date.now())}.pdf`;
 }
 
 function renderAxisCards(axes) {
@@ -407,7 +410,7 @@ function renderLanding() {
   return `
     <section class="hero-section">
       <div class="hero-copy">
-        <p class="eyebrow">한국어 문서 신뢰도 관리 MVP</p>
+        <p class="eyebrow">한국어 문서 신뢰도 관리</p>
         <h1>제출 전, 내 문서의 문체·출처·AI 작성 리스크를 한 번에 점검하세요</h1>
         <p class="hero-subtitle">
           결과는 작성자를 단정하지 않습니다. 문서의 문체, 근거, 출처, 작성 패턴에서 추가 검토가 필요한 부분을 알려드립니다.
@@ -421,7 +424,7 @@ function renderLanding() {
         <div class="report-preview">
           <div class="preview-topline">
             <span>문서 신뢰도 리포트</span>
-            <strong>보통</strong>
+            <strong>보완 권장</strong>
           </div>
           <div class="preview-bars">
             <span style="--bar: 58%"></span>
@@ -492,14 +495,14 @@ function renderCheck() {
 
   return `
     <section class="page-heading check-heading">
-      <p class="eyebrow">문서 검사 입력</p>
-      <h1 class="balanced-title" aria-label="검사할 문서를 붙여넣고 점검 기준을 선택하세요">
-        <span>검사할 문서를 붙여넣고</span>
-        <span>점검 기준을 선택하세요</span>
+      <p class="eyebrow">문서 점검 시작</p>
+      <h1 class="balanced-title" aria-label="점검할 문서를 붙여넣고 기준을 선택하세요">
+        <span>점검할 문서를 붙여넣고</span>
+        <span>기준을 선택하세요</span>
       </h1>
       <p class="split-helper">
-        <span>입력한 문서는 현재 브라우저에 임시로만 보관됩니다.</span>
-        <span>브라우저 데이터 삭제 시 함께 삭제될 수 있습니다.</span>
+        <span>결과는 작성 방식을 단정하지 않고,</span>
+        <span>제출 전 확인이 필요한 부분을 알려드립니다.</span>
       </p>
     </section>
 
@@ -508,7 +511,7 @@ function renderCheck() {
         <div class="field-block">
           <div class="field-title">
             <h2>문서 유형</h2>
-            <p>선택값은 리포트의 mock 시나리오에 반영됩니다.</p>
+            <p>선택한 문서 유형에 맞춰 점검 기준과 안내 문구가 달라집니다.</p>
           </div>
           <div class="document-type-grid" role="radiogroup" aria-label="문서 유형">
             ${DOCUMENT_TYPES.map((type) => renderDocumentTypeCard(type)).join("")}
@@ -528,7 +531,7 @@ function renderCheck() {
             name="body"
             data-document-body
             maxlength="${MAX_LENGTH + 500}"
-            placeholder="검사할 한국어 문서를 여기에 붙여넣어 주세요."
+            placeholder="점검할 한국어 문서를 여기에 붙여넣어 주세요."
             aria-describedby="body-helper body-error"
           >${escapeHtml(state.draft.body)}</textarea>
           <div class="input-meta ${countState}" id="body-helper">
@@ -542,8 +545,8 @@ function renderCheck() {
 
         <div class="field-block">
           <div class="field-title">
-            <h2>검사 옵션</h2>
-            <p>MVP에서는 모든 항목을 mock 데이터로 함께 표시합니다.</p>
+            <h2>점검 항목</h2>
+            <p>현재는 네 가지 항목을 함께 점검합니다.</p>
           </div>
           <div class="option-grid">
             ${CHECK_OPTIONS.map(
@@ -558,15 +561,15 @@ function renderCheck() {
         </div>
 
         <div class="form-actions check-actions">
-          <button class="button primary" type="submit">리스크 점검하기</button>
-          <button class="button secondary" type="button" data-show-error-state>오류 상태 확인</button>
+          <button class="button primary" type="submit">문서 리스크 점검하기</button>
+          ${isQaMode() ? `<button class="button secondary" type="button" data-show-error-state>오류 화면 테스트</button>` : ""}
         </div>
       </form>
 
-      <aside class="guide-panel check-guide" aria-label="검사 전 확인사항">
+      <aside class="guide-panel check-guide" aria-label="점검 전 확인사항">
         <div class="check-guide-header">
           <span class="guide-kicker">입력 전 점검</span>
-          <h2>검사 전 확인사항</h2>
+          <h2>점검 전 확인사항</h2>
           <p>본문을 넣기 전에 아래 기준만 확인하면 됩니다.</p>
         </div>
         <ul class="check-guide-list">
@@ -574,21 +577,21 @@ function renderCheck() {
             <span aria-hidden="true">01</span>
             <div>
               <strong>본문을 먼저 붙여넣기</strong>
-              <p>비어 있으면 검사 버튼 아래에 입력 안내가 표시됩니다.</p>
+              <p>비어 있으면 점검 버튼 아래에 입력 안내가 표시됩니다.</p>
             </div>
           </li>
           <li>
             <span aria-hidden="true">02</span>
             <div>
               <strong>결과는 참고 지표로 보기</strong>
-              <p>짧은 문서는 리스크 신호가 불안정할 수 있습니다.</p>
+              <p>짧은 문서는 분석 신뢰도가 낮을 수 있습니다.</p>
             </div>
           </li>
           <li>
             <span aria-hidden="true">03</span>
             <div>
               <strong>원문 보관 범위 확인</strong>
-              <p>현재 MVP는 브라우저 임시 저장과 mock 리포트만 사용합니다.</p>
+              <p>입력한 문서는 현재 브라우저에 임시로만 보관됩니다.</p>
             </div>
           </li>
         </ul>
@@ -614,7 +617,7 @@ function renderChecking() {
     <section class="loading-page">
       <div class="loading-card" aria-live="polite">
         <div class="spinner" aria-hidden="true"></div>
-        <p class="eyebrow">Mock 분석 진행 중</p>
+        <p class="eyebrow">문서 점검 진행 중</p>
         <h1>문서 리스크 신호를 정리하고 있습니다</h1>
         <ol class="loading-steps">
           ${loadingSteps
@@ -702,8 +705,8 @@ function renderReport() {
         <dl>
           <div><dt>글자 수</dt><dd>${report.meta.characterCount.toLocaleString("ko-KR")}자</dd></div>
           <div><dt>문장 수</dt><dd>${report.meta.sentenceCount.toLocaleString("ko-KR")}개</dd></div>
-          <div><dt>Mock 시나리오</dt><dd>${report.scenarioId}</dd></div>
-          <div><dt>시나리오 풀</dt><dd>${report.meta.mockScenarioCount}개</dd></div>
+          <div><dt>문서 유형</dt><dd>${report.documentLabel}</dd></div>
+          <div><dt>점검 항목</dt><dd>${report.axes.length.toLocaleString("ko-KR")}개</dd></div>
         </dl>
       </article>
       <div class="axis-grid">
@@ -783,7 +786,6 @@ function renderReport() {
           <p>${selectedFinding.suggestedRewrite || "이 문장은 현재 별도 제안문이 없습니다. 문서 목적에 맞게 직접 검토해 주세요."}</p>
           <div class="compare-actions">
             <button class="button primary" type="button" data-copy-suggestion="${selectedFinding.id}">제안문 복사</button>
-            <button class="button secondary" type="button" data-apply-suggestion>적용 mock</button>
           </div>
         </article>
       </div>
@@ -823,9 +825,9 @@ function renderErrorState() {
   return `
     <section class="error-page">
       <div class="error-card">
-        <p class="eyebrow">오류 상태</p>
+        <p class="eyebrow">점검 오류</p>
         <h1>리포트를 생성하지 못했습니다.</h1>
-        <p>Mock 분석 중 오류가 발생한 상태를 확인하는 화면입니다. 입력 화면으로 돌아가 다시 시도해 주세요.</p>
+        <p>점검 중 문제가 발생했습니다. 입력 화면으로 돌아가 다시 시도해 주세요.</p>
         <div class="hero-actions">
           <button class="button primary" type="button" data-retry-analysis>다시 시도</button>
           <button class="button secondary" type="button" data-recheck>입력 화면으로 이동</button>
@@ -841,13 +843,14 @@ function renderPdfReport() {
   const readiness = READINESS_META[report.overallLevel] || READINESS_META.medium;
   const generatedAt = formatDateTime(report.meta.createdAt);
   const fileName = createPdfFileName(report);
+  const qaMode = isQaMode();
 
   return `
     <section class="pdf-toolbar">
       <div>
         <p class="eyebrow">PDF 리포트</p>
         <h1>인쇄용 문서 신뢰도 리포트</h1>
-        <p>브라우저 인쇄에서 “PDF로 저장”을 선택해 파일로 내보낼 수 있습니다.</p>
+        <p>기본 저장은 현재 브라우저의 인쇄 기능으로 동작합니다. 저장 전 리포트 내용과 파일명을 확인해 주세요.</p>
         <div class="filename-box">
           <span>권장 파일명</span>
           <code>${fileName}</code>
@@ -856,8 +859,9 @@ function renderPdfReport() {
       </div>
       <div class="report-actions">
         <button class="button secondary" type="button" data-link-button="/report">리포트로 돌아가기</button>
-        <button class="button secondary" type="button" data-server-pdf>서버 PDF 생성</button>
-        <button class="button primary" type="button" data-print-report>인쇄 / PDF 저장</button>
+        ${qaMode ? `<button class="button secondary" type="button" data-server-pdf>서버 PDF 생성 테스트</button>` : ""}
+        <button class="button secondary" type="button" data-print-report>브라우저 인쇄로 저장</button>
+        <button class="button primary" type="button" data-print-report>PDF로 저장</button>
       </div>
     </section>
 
@@ -866,7 +870,7 @@ function renderPdfReport() {
         <div>
           <span class="card-label">제출 전 문서 리스크 점검기</span>
           <h2>${report.title}</h2>
-          <p>${report.documentLabel} · ${generatedAt} · ${report.scenarioId}</p>
+          <p>${report.documentLabel} · ${generatedAt}</p>
         </div>
         <strong>${readiness.label}</strong>
       </header>
@@ -930,7 +934,7 @@ function renderDocuments() {
     const status = getRetentionStatus(report);
     const matchesQuery =
       !query ||
-      [report.title, report.summary, report.documentLabel, report.scenarioId]
+      [report.title, report.summary, report.documentLabel]
         .filter(Boolean)
         .some((value) => String(value).toLowerCase().includes(query));
     const matchesLevel = state.documentsFilter.level === "all" || report.overallLevel === state.documentsFilter.level;
@@ -950,16 +954,16 @@ function renderDocuments() {
     <section class="document-tools" aria-label="문서함 검색과 필터">
       <label class="search-field">
         <span>검색</span>
-        <input type="search" value="${escapeHtml(state.documentsFilter.query)}" placeholder="제목, 요약, 시나리오 검색" data-doc-query />
+        <input type="search" value="${escapeHtml(state.documentsFilter.query)}" placeholder="제목, 요약, 문서 유형 검색" data-doc-query />
       </label>
       <label>
         <span>리스크</span>
         <select data-doc-level>
           ${[
             ["all", "전체"],
-            ["low", "낮음"],
-            ["medium", "보통"],
-            ["high", "높음"]
+            ["low", LEVEL_META.low.label],
+            ["medium", LEVEL_META.medium.label],
+            ["high", LEVEL_META.high.label]
           ]
             .map(([value, label]) => `<option value="${value}" ${state.documentsFilter.level === value ? "selected" : ""}>${label}</option>`)
             .join("")}
@@ -1025,7 +1029,7 @@ function renderDocuments() {
                       <span class="level-badge ${status.tone}">${status.label}</span>
                       <h2>${report.title}</h2>
                       <p>${report.summary}</p>
-                      <small>저장일: ${formatDateTime(report.savedAt || report.meta.createdAt)} · ${report.scenarioId} · ${status.helper}</small>
+                      <small>저장일: ${formatDateTime(report.savedAt || report.meta.createdAt)} · ${report.documentLabel} · ${status.helper}</small>
                     </div>
                     <div class="document-actions">
                       <button class="button secondary" type="button" data-open-saved-report="${report.id}">리포트 보기</button>
@@ -1088,7 +1092,7 @@ function renderSettings() {
           <input type="checkbox" name="trainingUse" ${state.settings.trainingUse ? "checked" : ""} disabled />
           <span>
             <strong>학습 데이터 사용</strong>
-            <small>MVP에서는 항상 비활성화되어 있습니다.</small>
+            <small>현재 제공하지 않는 옵션입니다.</small>
           </span>
         </label>
 
@@ -1109,7 +1113,7 @@ function renderSettings() {
       <aside class="guide-panel">
         <div class="policy-note">
           <h3>데이터 정책 기준</h3>
-          <p>사용자 원문은 외부 서버로 전송하지 않고, mock 분석 결과만 화면에 표시합니다.</p>
+          <p>기본 점검과 임시 저장은 현재 브라우저 기준으로 동작합니다. 서버 PDF 생성을 사용하는 경우 리포트 출력에 필요한 데이터가 PDF 생성을 위해 일시적으로 전송될 수 있습니다.</p>
         </div>
         <div class="quality-list">
           <h3>다음 구현 전 확인</h3>
@@ -1135,9 +1139,9 @@ function renderOrg() {
 
   return `
     <section class="page-heading">
-      <p class="eyebrow">조직 화면 초안</p>
+      <p class="eyebrow">기관용 데모</p>
       <h1>팀 문서 점검 현황을 한눈에 봅니다</h1>
-      <p>조직 화면은 B2B 파일럿 전 검토용 초안입니다. 현재는 이 브라우저에 저장된 리포트를 기반으로 mock 지표를 표시합니다.</p>
+      <p>기관이나 팀 단위 검토 흐름을 확인하기 위한 별도 데모입니다. 현재는 이 브라우저에 저장된 리포트를 기준으로 예시 지표를 표시합니다.</p>
     </section>
 
     <section class="org-metrics" aria-label="조직 요약 지표">
@@ -1147,9 +1151,9 @@ function renderOrg() {
         <p>현재 브라우저 문서함 기준</p>
       </article>
       <article class="metric-card">
-        <span class="card-label">우선 보완 필요</span>
+        <span class="card-label">우선 확인</span>
         <strong>${highCount}</strong>
-        <p>종합 리스크가 높은 리포트</p>
+        <p>종합 리포트에서 먼저 볼 항목</p>
       </article>
       <article class="metric-card">
         <span class="card-label">출처 근거</span>
@@ -1225,7 +1229,7 @@ function renderOrg() {
           ).join("")}
         </div>
         <div class="form-actions">
-          <button class="button secondary" type="button" data-org-policy-save>권한 정책 저장 mock</button>
+          <button class="button secondary" type="button" data-org-policy-save>권한 정책 저장</button>
         </div>
       </article>
 
@@ -1286,12 +1290,12 @@ function validateDraft() {
   state.draft.warning = "";
 
   if (!body) {
-    state.draft.error = "검사할 문서를 입력해 주세요.";
+    state.draft.error = "점검할 문서를 입력해 주세요.";
     return false;
   }
 
   if (body.length > MAX_LENGTH) {
-    state.draft.error = "한 번에 검사할 수 있는 글자 수를 초과했습니다.";
+    state.draft.error = "한 번에 점검할 수 있는 글자 수를 초과했습니다.";
     return false;
   }
 
@@ -1401,7 +1405,7 @@ async function generateServerPdf() {
   const readiness = READINESS_META[report.overallLevel] || READINESS_META.medium;
 
   try {
-    showToast("서버에서 PDF를 생성하고 있습니다.", "info");
+    showToast("서버에서 PDF 생성 테스트를 진행합니다.", "info");
     const response = await fetch("/api/pdf", {
       method: "POST",
       headers: {
@@ -1424,7 +1428,7 @@ async function generateServerPdf() {
     downloadBlob(blob, fileName);
     showToast("PDF 파일을 생성했습니다.", "success");
   } catch (error) {
-    showToast("서버 PDF 생성에 실패했습니다. 인쇄 / PDF 저장을 사용해 주세요.", "error");
+    showToast("서버 PDF 생성 테스트에 실패했습니다. 브라우저 인쇄 저장을 사용해 주세요.", "error");
   }
 }
 
@@ -1527,9 +1531,11 @@ function bindRouteEvents() {
     navigate("/pdf-report");
   });
 
-  document.querySelector("[data-print-report]")?.addEventListener("click", () => {
-    showToast("브라우저 인쇄 창에서 PDF 저장을 선택해 주세요.", "info");
-    window.print();
+  document.querySelectorAll("[data-print-report]").forEach((button) => {
+    button.addEventListener("click", () => {
+      showToast("브라우저 인쇄 창에서 PDF 저장을 선택해 주세요.", "info");
+      window.print();
+    });
   });
 
   document.querySelector("[data-server-pdf]")?.addEventListener("click", () => {
@@ -1557,10 +1563,6 @@ function bindRouteEvents() {
 
   document.querySelectorAll("[data-copy-suggestion]").forEach((button) => {
     button.addEventListener("click", () => copySuggestion(button.dataset.copySuggestion));
-  });
-
-  document.querySelector("[data-apply-suggestion]")?.addEventListener("click", () => {
-    showToast("현재 MVP에서는 적용 동작을 mock으로 표시합니다.", "info");
   });
 
   document.querySelectorAll("[data-link-button]").forEach((button) => {
@@ -1662,7 +1664,7 @@ function bindRouteEvents() {
   });
 
   document.querySelector("[data-org-policy-save]")?.addEventListener("click", () => {
-    showToast("조직 권한 정책 초안을 저장했습니다.", "success");
+    showToast("기관용 권한 정책을 저장했습니다.", "success");
   });
 
   document.querySelector("[data-settings-form]")?.addEventListener("submit", (event) => {

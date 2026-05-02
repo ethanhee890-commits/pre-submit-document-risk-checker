@@ -29,16 +29,16 @@ const mimeTypes = {
 };
 
 const AXIS_LABELS = {
-  style: "문체 자연도",
+  style: "문체 점검",
   ai: "AI 작성 리스크",
   citation: "출처·인용 리스크",
   submission: "제출 안정성"
 };
 
 const LEVEL_LABELS = {
-  low: "낮음",
-  medium: "보통",
-  high: "높음"
+  low: "양호",
+  medium: "보완 권장",
+  high: "우선 확인"
 };
 
 function escapeHtml(value) {
@@ -192,7 +192,7 @@ function buildPdfHtml(report) {
     <div>
       <span class="label">제출 전 문서 리스크 점검기</span>
       <h1>${escapeHtml(report.title || "문서 신뢰도 리포트")}</h1>
-      <p>${escapeHtml(report.documentLabel || "문서")} · ${escapeHtml(report.scenarioId || "REPORT")}</p>
+      <p>${escapeHtml(report.documentLabel || "문서")}</p>
     </div>
     <strong class="status">${escapeHtml(report.readinessLabel || "제출 전 검토")}</strong>
   </header>
@@ -349,5 +349,5 @@ const server = createServer(async (request, response) => {
 });
 
 server.listen(port, host, () => {
-  console.log(`문서 리스크 점검기 MVP: http://${host}:${port}`);
+  console.log(`문서 리스크 점검기: http://${host}:${port}`);
 });

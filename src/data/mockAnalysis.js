@@ -27,7 +27,7 @@ export const DOCUMENT_TYPES = [
 ];
 
 export const CHECK_OPTIONS = [
-  "문체 자연도",
+  "문체 점검",
   "AI 작성 리스크",
   "출처·인용 리스크",
   "제출 안정성"
@@ -48,7 +48,7 @@ export const CHECKLIST = [
   },
   {
     id: "C-004",
-    label: "AI 작성 리스크가 높은 문장을 직접 검토했습니다."
+    label: "AI 작성 리스크가 우선 확인 수준인 문장을 직접 검토했습니다."
   },
   {
     id: "C-005",
@@ -58,17 +58,17 @@ export const CHECKLIST = [
 
 export const LEVEL_META = {
   low: {
-    label: "낮음",
+    label: "양호",
     tone: "good",
-    summary: "현재 기준에서 큰 위험 신호는 낮습니다."
+    summary: "현재 기준에서 큰 보완 신호는 보이지 않습니다."
   },
   medium: {
-    label: "보통",
+    label: "보완 권장",
     tone: "watch",
     summary: "일부 문장에서 문체 일관성 또는 근거 보완이 필요할 수 있습니다."
   },
   high: {
-    label: "높음",
+    label: "우선 확인",
     tone: "alert",
     summary: "문서 일부 구간에서 추가 검토가 필요한 신호가 발견되었습니다."
   }
@@ -77,7 +77,7 @@ export const LEVEL_META = {
 export const MOCK_SCENARIO_COUNT = 12;
 
 const AXIS_LABELS = {
-  style: "문체 자연도",
+  style: "문체 점검",
   ai: "AI 작성 리스크",
   citation: "출처·인용 리스크",
   submission: "제출 안정성"
