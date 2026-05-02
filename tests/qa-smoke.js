@@ -101,6 +101,7 @@ assert(contents.get("src/styles.css").includes("@media (max-width: 760px)"), "�
 assert(contents.get("src/styles.css").includes("@media print"), "PDF/인쇄용 CSS가 없습니다.");
 assert(contents.get("src/styles.css").includes("@page"), "PDF 페이지 설정 CSS가 없습니다.");
 assert(contents.get("Dockerfile").includes("mcr.microsoft.com/playwright"), "Dockerfile이 Playwright 런타임을 사용하지 않습니다.");
+assert(contents.get("package.json").includes('"playwright": "1.56.1"'), "Docker 이미지와 맞는 Playwright 고정 버전이 없습니다.");
 assert(contents.get("render.yaml").includes("/api/health"), "Render 헬스체크 경로가 없습니다.");
 assert(contents.get("render.yaml").includes("autoDeployTrigger: off"), "Render 자동 배포 설정이 명시되지 않았습니다.");
 assert(contents.get("src/data/mockAnalysis.js").includes("MOCK_SCENARIO_COUNT = 12"), "mock 시나리오 풀이 8개 이상임을 확인할 수 없습니다.");
