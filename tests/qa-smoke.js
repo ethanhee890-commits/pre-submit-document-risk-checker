@@ -27,7 +27,7 @@ const requiredUiTexts = [
   "인쇄용 문서 신뢰도 리포트",
   "권장 파일명",
   "PDF로 저장",
-  "서버 PDF 생성 테스트",
+  "PDF API 테스트",
   "저장한 리포트를 다시 확인하세요",
   "필터 초기화",
   "보관정책과 데이터 사용 기준을 정합니다",
@@ -53,7 +53,8 @@ const removedPublicTerms = [
   "적용 mock",
   "오류 상태 확인",
   "권한 정책 저장 mock",
-  "문체 자연도"
+  "문체 자연도",
+  "서버 PDF 생성"
 ];
 
 const restrictedTerms = [
@@ -111,11 +112,11 @@ assert(contents.get("src/app.js").includes('"/pdf-report"'), "PDF 리포트 rout
 assert(contents.get("src/app.js").includes('"/documents"'), "문서함 route가 없습니다.");
 assert(contents.get("src/app.js").includes('"/settings"'), "설정 route가 없습니다.");
 assert(contents.get("src/app.js").includes('"/org"'), "조직 route가 없습니다.");
-assert(contents.get("server.js").includes('"/api/pdf"'), "서버 PDF 생성 API가 없습니다.");
+assert(contents.get("server.js").includes('"/api/pdf"'), "PDF API가 없습니다.");
 assert(contents.get("server.js").includes('"/api/health"'), "헬스체크 API가 없습니다.");
 assert(contents.get("server.js").includes('"/api/version"'), "버전 API가 없습니다.");
 assert(contents.get("server.js").includes('"0.0.0.0"'), "배포 환경용 host 바인딩이 없습니다.");
-assert(contents.get("src/app.js").includes("data-server-pdf"), "서버 PDF 생성 테스트 액션이 없습니다.");
+assert(contents.get("src/app.js").includes("data-server-pdf"), "PDF API 테스트 액션이 없습니다.");
 assert(contents.get("src/app.js").includes("getRetentionStatus"), "보관 기간 상태 로직이 없습니다.");
 assert(contents.get("src/app.js").includes("data-purge-expired"), "만료 리포트 정리 액션이 없습니다.");
 assert(contents.get("src/app.js").includes("ORG_MEMBERS"), "기관용 권한 데모 데이터가 없습니다.");

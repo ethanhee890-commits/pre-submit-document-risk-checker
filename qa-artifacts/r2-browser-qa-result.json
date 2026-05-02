@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "baseUrl": "http://127.0.0.1:4193",
+  "screenshots": [
+    "qa-artifacts/LAND-001_r2_desktop.png",
+    "qa-artifacts/LAND-001_r2_mobile.png",
+    "qa-artifacts/CHECK-001_r2_desktop.png",
+    "qa-artifacts/CHECK-001_r2_mobile.png",
+    "qa-artifacts/CHECK-EMPTY-ERROR_r2.png",
+    "qa-artifacts/CHECKING-001_r2.png",
+    "qa-artifacts/REPORT-001_r2_desktop.png",
+    "qa-artifacts/REPORT-SENTENCE-DETAIL_r2.png",
+    "qa-artifacts/REPORT-SUGGESTION_r2.png",
+    "qa-artifacts/REPORT-CHECKLIST_r2.png",
+    "qa-artifacts/REPORT-001_r2_mobile.png",
+    "qa-artifacts/PDF-001_r2.png",
+    "qa-artifacts/SETTINGS-001_r2.png",
+    "qa-artifacts/DOC-001_r2.png"
+  ]
+}

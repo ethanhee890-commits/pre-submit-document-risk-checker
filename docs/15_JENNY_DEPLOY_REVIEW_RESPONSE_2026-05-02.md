@@ -18,13 +18,13 @@
 | `/checking` | 문서 점검 로딩 |
 | `/report` | 리스크 리포트 |
 | `/pdf-report` | 인쇄용 PDF 리포트 |
-| `/pdf-report?qa=1` | QA용 서버 PDF 생성 테스트 버튼 포함 PDF 화면 |
+| `/pdf-report?qa=1` | QA용 PDF API 테스트 버튼 포함 PDF 화면 |
 | `/documents` | 브라우저 임시 문서함 |
 | `/settings` | 기본 설정과 데이터 정책 |
 | `/org` | 기관용 데모, 일반 내비게이션에서는 숨김 |
 | `/api/health` | Render 헬스체크 |
 | `/api/version` | 배포 버전 확인 |
-| `/api/pdf` | QA용 서버 PDF 생성 API |
+| `/api/pdf` | QA용 PDF API |
 
 ## 3. 구현 화면
 
@@ -62,8 +62,8 @@
 - 일반 내비게이션에서 조직 메뉴 숨김
 - `/org`는 기관용 데모 직접 URL로 라벨링
 - 리스크 등급을 `양호`, `보완 권장`, `우선 확인`으로 변경
-- `문체 자연도`를 `문체 점검`으로 변경
-- PDF 기본 버튼을 `PDF로 저장`으로 정리하고 서버 PDF 생성은 QA 모드로 분리
+- 기존 문체 라벨을 `문체 점검`으로 변경
+- PDF 기본 버튼을 `PDF로 저장`으로 정리하고 PDF API 테스트는 QA 모드로 분리
 
 ## 6. 데이터/PDF 정책
 
@@ -71,7 +71,7 @@
 
 ```text
 기본 점검과 임시 저장은 현재 브라우저 기준으로 동작합니다.
-서버 PDF 생성을 사용하는 경우 리포트 출력에 필요한 데이터가 PDF 생성을 위해 일시적으로 전송될 수 있습니다.
+PDF 파일을 서버에서 만드는 기능을 사용하는 경우 리포트 출력에 필요한 데이터가 일시적으로 전송될 수 있습니다.
 ```
 
 ## 7. QA 결과
@@ -94,7 +94,7 @@
 - `index.html`: 브랜드 보조 문구와 내비게이션 정리
 - `src/app.js`: 사용자 문구, QA 모드 분기, 리포트/PDF/문서함/설정/기관용 데모 UI 정리
 - `src/data/mockAnalysis.js`: 4축 라벨과 리스크 등급 라벨 정리
-- `server.js`: 서버 PDF 출력 라벨과 로그 문구 정리
+- `server.js`: PDF 출력 라벨과 로그 문구 정리
 - `README.md`: 현재 구현 기준과 route list 갱신
 - `tests/qa-smoke.js`: Sprint 2.2 문구 정책 검증 추가
 - `qa-artifacts/*-sprint2-2-*.png`: 최신 QA 스크린샷 추가
@@ -104,4 +104,3 @@
 - 실제 AI 모델, 계정, 결제, DB 저장은 아직 연결하지 않았다.
 - Render 무료 인스턴스는 비활성 상태 후 첫 요청이 느릴 수 있다.
 - Render 설정이 수동 배포 기준이므로 GitHub push 후 Render에서 최신 커밋을 다시 배포해야 한다.
-

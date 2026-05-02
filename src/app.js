@@ -859,7 +859,7 @@ function renderPdfReport() {
       </div>
       <div class="report-actions">
         <button class="button secondary" type="button" data-link-button="/report">리포트로 돌아가기</button>
-        ${qaMode ? `<button class="button secondary" type="button" data-server-pdf>서버 PDF 생성 테스트</button>` : ""}
+        ${qaMode ? `<button class="button secondary" type="button" data-server-pdf>PDF API 테스트</button>` : ""}
         <button class="button secondary" type="button" data-print-report>브라우저 인쇄로 저장</button>
         <button class="button primary" type="button" data-print-report>PDF로 저장</button>
       </div>
@@ -1113,7 +1113,7 @@ function renderSettings() {
       <aside class="guide-panel">
         <div class="policy-note">
           <h3>데이터 정책 기준</h3>
-          <p>기본 점검과 임시 저장은 현재 브라우저 기준으로 동작합니다. 서버 PDF 생성을 사용하는 경우 리포트 출력에 필요한 데이터가 PDF 생성을 위해 일시적으로 전송될 수 있습니다.</p>
+          <p>기본 점검과 임시 저장은 현재 브라우저 기준으로 동작합니다. PDF 파일을 서버에서 만드는 기능을 사용하는 경우 리포트 출력에 필요한 데이터가 일시적으로 전송될 수 있습니다.</p>
         </div>
         <div class="quality-list">
           <h3>다음 구현 전 확인</h3>
@@ -1405,7 +1405,7 @@ async function generateServerPdf() {
   const readiness = READINESS_META[report.overallLevel] || READINESS_META.medium;
 
   try {
-    showToast("서버에서 PDF 생성 테스트를 진행합니다.", "info");
+    showToast("PDF API 테스트를 진행합니다.", "info");
     const response = await fetch("/api/pdf", {
       method: "POST",
       headers: {
@@ -1428,7 +1428,7 @@ async function generateServerPdf() {
     downloadBlob(blob, fileName);
     showToast("PDF 파일을 생성했습니다.", "success");
   } catch (error) {
-    showToast("서버 PDF 생성 테스트에 실패했습니다. 브라우저 인쇄 저장을 사용해 주세요.", "error");
+    showToast("PDF API 테스트에 실패했습니다. 브라우저 인쇄 저장을 사용해 주세요.", "error");
   }
 }
 

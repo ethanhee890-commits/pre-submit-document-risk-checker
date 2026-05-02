@@ -53,10 +53,10 @@ node tests/qa-smoke.js
 https://pre-submit-document-risk-checker.onrender.com
 ```
 
-## 서버 PDF 생성
+## PDF API
 
 일반 사용자 화면의 기본 PDF 저장은 브라우저 인쇄 기능으로 동작합니다. `/api/pdf`는 QA 모드와 서버 기반 PDF 저장 검증을 위한 엔드포인트입니다.
-서버 PDF 생성을 사용하는 경우 리포트 출력에 필요한 데이터가 PDF 생성을 위해 일시적으로 전송될 수 있습니다.
+PDF 파일을 서버에서 만드는 기능을 사용하는 경우 리포트 출력에 필요한 데이터가 일시적으로 전송될 수 있습니다.
 일반 로컬 환경에서 실행할 경우에는 `optionalDependencies`의 `playwright` 설치가 필요할 수 있습니다.
 
 ## Route list
@@ -69,7 +69,7 @@ https://pre-submit-document-risk-checker.onrender.com
 | `/checking` | 문서 점검 로딩 |
 | `/report` | 문서 신뢰도 리포트 |
 | `/pdf-report` | 인쇄용 PDF 리포트 |
-| `/pdf-report?qa=1` | QA용 서버 PDF 생성 테스트 버튼 포함 PDF 화면 |
+| `/pdf-report?qa=1` | QA용 PDF API 테스트 버튼 포함 PDF 화면 |
 | `/documents` | 브라우저 임시 문서함 |
 | `/settings` | 기본 설정/보관정책 |
 | `/org` | 기관용 데모, 일반 내비게이션에서는 숨김 |
@@ -92,7 +92,7 @@ https://pre-submit-document-risk-checker.onrender.com
 - 실제 AI 모델, 외부 검사 API, 결제, 계정 기능은 연결하지 않습니다.
 - 리포트 결과는 작성자를 단정하지 않는 참고 지표로 표현합니다.
 - 기본 점검과 임시 저장은 현재 브라우저 기준으로 동작합니다.
-- 서버 PDF 생성을 사용하는 경우 리포트 출력에 필요한 데이터가 PDF 생성을 위해 일시적으로 전송될 수 있습니다.
+- PDF 파일을 서버에서 만드는 기능을 사용하는 경우 리포트 출력에 필요한 데이터가 일시적으로 전송될 수 있습니다.
 
 ## Sprint 1 보완 반영
 
@@ -121,18 +121,18 @@ https://pre-submit-document-risk-checker.onrender.com
 ## 리스크 해소 반영
 
 - Git 저장소로 추적할 수 있도록 초기화했습니다.
-- `/api/pdf` 서버 PDF 생성 API를 추가했습니다.
-- PDF 화면에서 일반 사용자용 `PDF로 저장`과 QA용 `서버 PDF 생성 테스트`를 분리했습니다.
+- `/api/pdf` PDF API를 추가했습니다.
+- PDF 화면에서 일반 사용자용 `PDF로 저장`과 QA용 `PDF API 테스트`를 분리했습니다.
 - 기관용 데모 화면에 권한 매트릭스와 감사 로그 예시 데이터를 추가했습니다.
 - 제니 시각 QA용 공유 문서 `docs/13_JENNY_VISUAL_QA_PACKAGE_2026-05-01.md`를 추가했습니다.
 
 ## Sprint 2.2 배포 리뷰 반영
 
-- 일반 사용자 화면에서 `Mock`, `MVP`, `mock 시나리오`, `적용 mock`, `시나리오 풀` 등 개발용 표현을 제거했습니다.
+- 일반 사용자 화면에서 개발용 표현과 내부 검증용 라벨을 제거했습니다.
 - 리스크 등급을 `양호`, `보완 권장`, `우선 확인`으로 정리했습니다.
 - `/check` 화면 제목, 보조 문구, 점검 항목 안내를 사용자용 문구로 교체했습니다.
 - 일반 내비게이션에서 `조직` 메뉴를 숨기고 `/org`는 기관용 데모 직접 URL로 유지했습니다.
-- PDF와 설정 화면의 데이터 처리 안내를 서버 PDF 생성 정책과 맞췄습니다.
+- PDF와 설정 화면의 데이터 처리 안내를 PDF API 정책과 맞췄습니다.
 - QA 스크린샷은 `qa-artifacts/*-sprint2-2-*.png` 파일로 갱신했습니다.
 
 ## 배포 준비 반영
